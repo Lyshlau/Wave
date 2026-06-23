@@ -4,11 +4,20 @@ import { Onboarding } from "./components/Onboarding";
 import { TodayPage } from "./pages/TodayPage";
 import { ProgressPage } from "./pages/ProgressPage";
 import { JourneyPage } from "./pages/JourneyPage";
-import { useWaveState } from "./hooks/useWaveState";
+import { useLocalWaveState } from "./hooks/useLocalWaveState";
+import { useConvexWaveState } from "./hooks/useConvexWaveState";
+import { isConvexAvailable } from "./lib/convex";
+import { ConvexProvider } from "./providers/ConvexProvider";
+import {
+  WaveStateProvider,
+  type WaveStateValue,
+} from "./context/WaveStateContext";
 
-export default function App() {
-  const { state, isLoading, completeOnboarding } = useWaveState();
-
+function AppShell({
+  state,
+  isLoading,
+  completeOnboarding,
+}: Pick<WaveStateValue, "state" | "isLoading" | "completeOnboarding">) {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-cream flex items-center justify-center">
@@ -33,4 +42,38 @@ export default function App() {
       </Route>
     </Routes>
   );
+}
+
+function WaveApp({ wave }: { wave: WaveStateValue }) {
+  return (
+    <WaveStateProvider value={wave}>
+      <AppShell
+        state={wave.state}
+        isLoading={wave.isLoading}
+        completeOnboarding={wave.completeOnboarding}
+      />
+    </WaveStateProvider>
+  );
+}
+
+function LocalApp() {
+  const wave = useLocalWaveState();
+  return <WaveApp wave={wave} />;
+}
+
+function ConvexApp() {
+  const wave = useConvexWaveState();
+  return <WaveApp wave={wave} />;
+}
+
+export default function App() {
+  if (isConvexAvailable) {
+    return (
+      <ConvexProvider>
+        <ConvexApp />
+      </ConvexProvider>
+    );
+  }
+
+  return <LocalApp />;
 }
