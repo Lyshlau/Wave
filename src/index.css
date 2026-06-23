@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply antialiased;
+  }
+
+  body {
+    @apply bg-cream text-olive-deep font-sans;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer components {
+  .text-body {
+    @apply text-olive-deep;
+  }
+
+  .text-label {
+    @apply text-olive font-medium;
+  }
+
+  .text-muted {
+    @apply text-olive-muted;
+  }
+
+  .card {
+    @apply bg-white/70 backdrop-blur-sm rounded-2xl border border-sand/60 shadow-sm;
+  }
+
+  .btn-primary {
+    @apply bg-sage-dark text-cream font-medium px-6 py-3 rounded-xl
+           hover:bg-sage transition-colors duration-200
+           focus:outline-none focus:ring-2 focus:ring-sage focus:ring-offset-2 focus:ring-offset-cream;
+  }
+
+  .btn-secondary {
+    @apply bg-cream-dark text-olive-deep font-medium px-6 py-3 rounded-xl
+           border border-sand hover:bg-sand-light transition-colors duration-200
+           focus:outline-none focus:ring-2 focus:ring-sage focus:ring-offset-2 focus:ring-offset-cream;
+  }
+
+  .nav-link {
+    @apply flex flex-col items-center gap-1 px-4 py-2 rounded-xl text-olive-muted
+           transition-colors duration-200;
+  }
+
+  .nav-link-active {
+    @apply bg-sage-dark text-cream font-medium;
+  }
+
+  .nav-link-inactive {
+    @apply text-olive hover:text-olive-deep;
+  }
+}
