@@ -1,3 +1,16 @@
+import type { LucideIcon } from "lucide-react";
+import {
+  Activity,
+  BookOpen,
+  Calendar,
+  Check,
+  Leaf,
+  Moon,
+  Sun,
+  Waves,
+  Wind,
+} from "lucide-react";
+
 export type ReflectionPace = "wave" | "building-swell" | "tsunami";
 
 export type MoodAnswer =
@@ -11,6 +24,7 @@ export interface Ritual {
   id: string;
   label: string;
   description: string;
+  icon: LucideIcon;
 }
 
 export interface DailyEntry {
@@ -31,33 +45,46 @@ export interface UserState {
 
 export const RITUALS: Ritual[] = [
   {
-    id: "morning-skin",
-    label: "Morning skin ritual",
-    description: "Cleanse, treat, and protect your skin",
+    id: "move",
+    label: "Move",
+    description: "Pilates, mobility, strength or intentional movement",
+    icon: Activity,
   },
   {
-    id: "movement",
-    label: "Gentle movement",
-    description: "Move your body with intention",
+    id: "outside",
+    label: "Outside",
+    description: "Walk, run, sunlight or time outdoors",
+    icon: Sun,
   },
   {
-    id: "hydration",
-    label: "Nourish & hydrate",
-    description: "Water and mindful nourishment",
+    id: "nourish",
+    label: "Nourish",
+    description: "Hydration, protein and whole-food choices",
+    icon: Leaf,
   },
   {
-    id: "mindful-moment",
-    label: "Mindful moment",
-    description: "A few quiet breaths or stillness",
+    id: "ground",
+    label: "Ground",
+    description: "Journaling, meditation or reflection",
+    icon: Waves,
   },
   {
-    id: "evening-skin",
-    label: "Evening skin ritual",
-    description: "Wind down with your evening care",
+    id: "grow",
+    label: "Grow",
+    description: "Reading, learning or creating",
+    icon: BookOpen,
   },
 ];
 
 export const CHALLENGE_DAYS = 75;
+
+export const LEGACY_RITUAL_ID_MAP: Record<string, string> = {
+  "morning-skin": "move",
+  movement: "move",
+  hydration: "nourish",
+  "mindful-moment": "ground",
+  "evening-skin": "grow",
+};
 
 export const REFLECTION_OPTIONS: {
   value: ReflectionPace;
@@ -67,53 +94,60 @@ export const REFLECTION_OPTIONS: {
   {
     value: "wave",
     label: "Wave",
-    description: "Gentle and steady — just showing up",
+    description: "Steady and present — you showed up",
   },
   {
     value: "building-swell",
     label: "Building Swell",
-    description: "Momentum is growing, energy rising",
+    description: "Momentum building, energy rising",
   },
   {
     value: "tsunami",
     label: "Tsunami",
-    description: "Full force — you're in the flow",
+    description: "Full force — deep in the flow",
   },
 ];
 
-export const MOOD_OPTIONS: { value: MoodAnswer; label: string; emoji: string }[] =
-  [
-    { value: "calm", label: "Calm", emoji: "🌊" },
-    { value: "steady", label: "Steady", emoji: "🌿" },
-    { value: "energised", label: "Energised", emoji: "✨" },
-    { value: "tired", label: "Tired", emoji: "🌙" },
-    { value: "overwhelmed", label: "Overwhelmed", emoji: "🌀" },
-  ];
+export const MOOD_OPTIONS: {
+  value: MoodAnswer;
+  label: string;
+  icon: LucideIcon;
+}[] = [
+  { value: "calm", label: "Calm", icon: Waves },
+  { value: "steady", label: "Steady", icon: Leaf },
+  { value: "energised", label: "Energised", icon: Sun },
+  { value: "tired", label: "Tired", icon: Moon },
+  { value: "overwhelmed", label: "Overwhelmed", icon: Wind },
+];
 
-export const ONBOARDING_SLIDES = [
+export const ONBOARDING_SLIDES: {
+  title: string;
+  body: string;
+  icon: LucideIcon;
+}[] = [
   {
     title: "Welcome to Wave",
-    body: "A calm space for your daily wellness rituals. No pressure, no punishment — just presence.",
-    icon: "🌊",
+    body: "A calm space for your 75-day personal growth challenge. No pressure — just presence.",
+    icon: Waves,
   },
   {
-    title: "Complete your five daily rituals",
-    body: "Tick off your rituals as you go. Each one takes just a moment — your whole day fits in under 30 seconds.",
-    icon: "✓",
+    title: "Five daily rituals",
+    body: "Move, go outside, nourish, ground, and grow. Check each one off as you go.",
+    icon: Check,
   },
   {
-    title: "Reflect on your pace",
-    body: "When you're ready, choose how today felt: Wave, Building Swell, or Tsunami. There's no wrong answer.",
-    icon: "🌀",
+    title: "Reflect when ready",
+    body: "After all five rituals, choose your pace: Wave, Building Swell, or Tsunami.",
+    icon: Activity,
   },
   {
-    title: "Track your presence across 75 days",
-    body: "Watch your journey unfold. Every day you show up counts — even the quiet ones.",
-    icon: "📅",
+    title: "75 days of showing up",
+    body: "Track your journey across the full challenge. Every day counts — even the quiet ones.",
+    icon: Calendar,
   },
   {
-    title: "Progress over perfection",
-    body: "Miss a day? That's okay. Wave doesn't restart — you simply pick up where you left off.",
-    icon: "🌿",
+    title: "Presence over perfection",
+    body: "Miss a day? Pick up where you left off. Wave doesn't restart.",
+    icon: Leaf,
   },
 ];

@@ -1,4 +1,5 @@
 import type { Ritual } from "../types";
+import { Check } from "lucide-react";
 
 interface RitualCardProps {
   ritual: Ritual;
@@ -13,52 +14,44 @@ export function RitualCard({
   disabled = false,
   onToggle,
 }: RitualCardProps) {
+  const Icon = ritual.icon;
+
   return (
     <button
       onClick={onToggle}
       disabled={disabled}
       aria-pressed={completed}
-      className={`w-full card p-4 flex items-center gap-4 text-left transition-all duration-200
-        ${disabled ? "opacity-60 cursor-not-allowed" : "hover:shadow-md active:scale-[0.99]"}
-        ${completed ? "border-sage bg-sage/10" : ""}`}
+      className={`w-full flex items-center gap-4 py-4 text-left transition-opacity duration-200
+        border-b border-sand/30 last:border-b-0
+        ${disabled ? "opacity-50 cursor-not-allowed" : "hover:opacity-80 active:opacity-70"}`}
     >
       <div
-        className={`flex-shrink-0 w-7 h-7 rounded-full border-2 flex items-center justify-center transition-colors
-          ${
-            completed
-              ? "bg-sage-dark border-sage-dark"
-              : "border-olive-muted bg-transparent"
-          }`}
+        className={`flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center transition-colors
+          ${completed ? "bg-sage-dark/15 text-sage-dark" : "bg-cream-dark/60 text-olive-muted"}`}
         aria-hidden="true"
       >
-        {completed && (
-          <svg
-            className="w-4 h-4 text-cream"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={3}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M5 13l4 4L19 7"
-            />
-          </svg>
-        )}
+        <Icon className="w-4 h-4" strokeWidth={1.75} />
       </div>
 
       <div className="flex-1 min-w-0">
-        <p
-          className={`font-medium text-base leading-snug ${
-            completed ? "text-olive-deep" : "text-olive-deep"
-          }`}
-        >
+        <p className="font-medium text-base leading-snug text-olive-deep">
           {ritual.label}
         </p>
-        <p className="text-olive text-sm mt-0.5 leading-snug">
+        <p className="text-olive-muted text-sm mt-0.5 leading-snug">
           {ritual.description}
         </p>
+      </div>
+
+      <div
+        className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center transition-colors
+          ${
+            completed
+              ? "bg-sage-dark text-cream"
+              : "border border-sand/60 bg-transparent"
+          }`}
+        aria-hidden="true"
+      >
+        {completed && <Check className="w-3.5 h-3.5" strokeWidth={2.5} />}
       </div>
     </button>
   );
