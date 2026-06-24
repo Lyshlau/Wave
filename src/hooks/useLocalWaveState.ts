@@ -39,6 +39,14 @@ export function useLocalWaveState() {
     persist(next);
   }, [localState, persist]);
 
+  const completeChallengeReflection = useCallback(() => {
+    const next = {
+      ...localState,
+      challengeReflectionViewed: true,
+    };
+    persist(next);
+  }, [localState, persist]);
+
   const toggleRitual = useCallback(
     (date: string, ritualId: string) => {
       const existing =
@@ -105,6 +113,7 @@ export function useLocalWaveState() {
     isLoading: false,
     isConvexConnected: false,
     completeOnboarding,
+    completeChallengeReflection,
     toggleRitual,
     savePartialDay,
     completeDayWithReflection,

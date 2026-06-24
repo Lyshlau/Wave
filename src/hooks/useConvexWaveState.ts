@@ -42,6 +42,8 @@ export function useConvexWaveState() {
         deviceId,
         challengeStartDate: convexProfile.challengeStartDate,
         onboardingCompleted: convexProfile.onboardingCompleted,
+        challengeReflectionViewed:
+          convexProfile.challengeReflectionViewed ?? false,
         dailyEntries: entriesToRecord(
           convexEntries.map((e: {
             date: string;
@@ -70,6 +72,7 @@ export function useConvexWaveState() {
         deviceId,
         challengeStartDate: current.challengeStartDate,
         onboardingCompleted: current.onboardingCompleted,
+        challengeReflectionViewed: current.challengeReflectionViewed,
       });
       for (const entry of Object.values(current.dailyEntries)) {
         void upsertDailyEntry({ deviceId, ...entry });
@@ -86,6 +89,7 @@ export function useConvexWaveState() {
         deviceId,
         challengeStartDate: next.challengeStartDate,
         onboardingCompleted: next.onboardingCompleted,
+        challengeReflectionViewed: next.challengeReflectionViewed,
       });
     },
     [deviceId, upsertProfile],
@@ -112,6 +116,14 @@ export function useConvexWaveState() {
       onboardingCompleted: true,
       challengeStartDate:
         localState.challengeStartDate ?? formatDate(new Date()),
+    };
+    persist(next);
+  }, [localState, persist]);
+
+  const completeChallengeReflection = useCallback(() => {
+    const next = {
+      ...localState,
+      challengeReflectionViewed: true,
     };
     persist(next);
   }, [localState, persist]);
@@ -182,6 +194,7 @@ export function useConvexWaveState() {
     isLoading,
     isConvexConnected: true,
     completeOnboarding,
+    completeChallengeReflection,
     toggleRitual,
     savePartialDay,
     completeDayWithReflection,

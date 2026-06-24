@@ -19,6 +19,7 @@ export const upsertProfile = mutation({
     deviceId: v.string(),
     challengeStartDate: v.union(v.string(), v.null()),
     onboardingCompleted: v.boolean(),
+    challengeReflectionViewed: v.optional(v.boolean()),
   },
   handler: async (ctx, args) => {
     const existing = await ctx.db
@@ -30,11 +31,15 @@ export const upsertProfile = mutation({
       await ctx.db.patch(existing._id, {
         challengeStartDate: args.challengeStartDate,
         onboardingCompleted: args.onboardingCompleted,
+        challengeReflectionViewed: args.challengeReflectionViewed ?? false,
       });
       return existing._id;
     }
 
-    return await ctx.db.insert("userProfiles", args);
+    return await ctx.db.insert("userProfiles", {
+      ...args,
+      challengeReflectionViewed: args.challengeReflectionViewed ?? false,
+    });
   },
 });
 
