@@ -1,4 +1,6 @@
+import { Link } from "react-router-dom";
 import { useWaveState } from "../hooks/useWaveState";
+import { isChallengeComplete } from "../lib/archetypes";
 import { CHALLENGE_DAYS } from "../types";
 import {
   formatDate,
@@ -14,6 +16,7 @@ export function ProgressPage() {
   const today = formatDate(new Date());
   const dayNumber = getDayNumber(state.challengeStartDate, today);
   const currentDay = dayNumber ? Math.min(dayNumber, CHALLENGE_DAYS) : 0;
+  const challengeEnded = isChallengeComplete(state.challengeStartDate, today);
 
   const completeDays = getCompleteDaysCount(state.dailyEntries);
   const streak = getCurrentStreak(
@@ -34,9 +37,23 @@ export function ProgressPage() {
           Progress
         </h1>
         <p className="text-olive mt-2 text-base">
-          Presence over perfection.
+          Evidence of how you showed up.
         </p>
       </header>
+
+      {challengeEnded && (
+        <div className="mb-10 text-center">
+          <p className="font-display text-2xl text-olive-deep mb-2">
+            Journey complete
+          </p>
+          <p className="text-olive text-sm mb-4">
+            75 days of showing up in your own way.
+          </p>
+          <Link to="/reflection" className="btn-primary inline-block text-sm">
+            View your reflection
+          </Link>
+        </div>
+      )}
 
       <div className="mb-10 text-center">
         <p className="font-display text-5xl text-olive-deep font-medium">
@@ -59,7 +76,7 @@ export function ProgressPage() {
       </div>
 
       <p className="text-olive-muted text-sm text-center mt-12 leading-relaxed">
-        Every ritual checked off is a step forward.
+        Every ritual checked off is evidence of your consistency.
       </p>
     </div>
   );

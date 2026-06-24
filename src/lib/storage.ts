@@ -55,6 +55,7 @@ export function createDefaultUserState(): UserState {
     deviceId: getDeviceId(),
     challengeStartDate: null,
     onboardingCompleted: false,
+    challengeReflectionViewed: false,
     dailyEntries: {},
   };
 }
@@ -64,7 +65,11 @@ export function migrateUserState(state: UserState): UserState {
   for (const [date, entry] of Object.entries(state.dailyEntries)) {
     dailyEntries[date] = migrateDailyEntry(entry);
   }
-  return { ...state, dailyEntries };
+  return {
+    ...state,
+    challengeReflectionViewed: state.challengeReflectionViewed ?? false,
+    dailyEntries,
+  };
 }
 
 export function loadUserStateFromLocal(): UserState {

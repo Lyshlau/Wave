@@ -13,24 +13,21 @@ export function Onboarding({ onComplete }: OnboardingProps) {
 
   return (
     <div className="fixed inset-0 z-50 bg-cream flex flex-col">
-      <div className="flex-1 flex flex-col items-center justify-center px-8 pb-8">
-        <div
-          className="w-16 h-16 rounded-full bg-sage-dark/10 flex items-center justify-center mb-10"
-          aria-hidden="true"
-        >
-          <Icon className="w-8 h-8 text-sage-dark" strokeWidth={1.5} />
+      <div className="flex-1 flex flex-col items-center justify-center px-10 pb-8 max-w-md mx-auto w-full">
+        <div className="mb-14" aria-hidden="true">
+          <Icon className="w-10 h-10 text-sage-dark" strokeWidth={1.25} />
         </div>
 
-        <h1 className="font-display text-3xl text-olive-deep text-center mb-4 leading-tight">
+        <h1 className="font-display text-[2rem] text-olive-deep text-center mb-5 leading-snug">
           {current.title}
         </h1>
 
-        <p className="text-olive text-center text-base leading-relaxed max-w-sm">
+        <p className="text-olive text-center text-[0.95rem] leading-relaxed">
           {current.body}
         </p>
 
         <div
-          className="flex gap-2 mt-10"
+          className="flex gap-2.5 mt-14"
           role="tablist"
           aria-label="Onboarding progress"
         >
@@ -39,18 +36,18 @@ export function Onboarding({ onComplete }: OnboardingProps) {
               key={i}
               role="tab"
               aria-selected={i === slide}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
-                i === slide ? "w-6 bg-sage-dark" : "w-1.5 bg-sand"
+              className={`h-1 rounded-full transition-all duration-300 ${
+                i === slide ? "w-8 bg-sage-dark" : "w-1.5 bg-sand"
               }`}
             />
           ))}
         </div>
       </div>
 
-      <div className="px-8 pb-10 flex flex-col gap-3">
+      <div className="px-8 pb-12 flex flex-col gap-3 max-w-md mx-auto w-full">
         {isLast ? (
           <button onClick={onComplete} className="btn-primary w-full text-base">
-            Begin
+            Begin Day 1
           </button>
         ) : (
           <button

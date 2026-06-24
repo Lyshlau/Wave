@@ -3,9 +3,10 @@ import {
   Activity,
   BookOpen,
   Calendar,
-  Check,
   Leaf,
   Moon,
+  RefreshCw,
+  Sparkles,
   Sun,
   Waves,
   Wind,
@@ -36,10 +37,27 @@ export interface DailyEntry {
   isPartial: boolean;
 }
 
+export type ArchetypeId =
+  | "wave"
+  | "current"
+  | "tide"
+  | "river"
+  | "ocean"
+  | "tsunami";
+
+export interface Archetype {
+  id: ArchetypeId;
+  name: string;
+  trait: string;
+  message: string;
+  hidden?: boolean;
+}
+
 export interface UserState {
   deviceId: string;
   challengeStartDate: string | null;
   onboardingCompleted: boolean;
+  challengeReflectionViewed: boolean;
   dailyEntries: Record<string, DailyEntry>;
 }
 
@@ -120,34 +138,78 @@ export const MOOD_OPTIONS: {
   { value: "overwhelmed", label: "Overwhelmed", icon: Wind },
 ];
 
+export const ARCHETYPES: Archetype[] = [
+  {
+    id: "wave",
+    name: "The Wave",
+    trait: "Returns consistently",
+    message:
+      "You learned the art of returning. Progress came from consistency, not perfection.",
+  },
+  {
+    id: "current",
+    name: "The Current",
+    trait: "Momentum builder",
+    message: "Once you found your flow, you trusted it.",
+  },
+  {
+    id: "tide",
+    name: "The Tide",
+    trait: "Adaptive",
+    message:
+      "You learned to move with changing seasons rather than against them.",
+  },
+  {
+    id: "river",
+    name: "The River",
+    trait: "Purposeful",
+    message:
+      "Your progress came through deliberate action and steady direction.",
+  },
+  {
+    id: "ocean",
+    name: "The Ocean",
+    trait: "Balanced",
+    message: "You created growth across multiple areas of your life.",
+  },
+  {
+    id: "tsunami",
+    name: "The Tsunami",
+    trait: "Powerful but intense",
+    message:
+      "You moved with incredible energy. Your next season may be about rhythm rather than intensity.",
+    hidden: true,
+  },
+];
+
 export const ONBOARDING_SLIDES: {
   title: string;
   body: string;
   icon: LucideIcon;
 }[] = [
   {
-    title: "Welcome to Wave",
-    body: "A calm space for your 75-day personal growth challenge. No pressure — just presence.",
+    title: "Life comes in waves",
+    body: "Some days feel effortless. Some feel messy. Both count. Wave helps you see your progress, even when it doesn't feel like it.",
     icon: Waves,
   },
   {
-    title: "Five daily rituals",
-    body: "Move, go outside, nourish, ground, and grow. Check each one off as you go.",
-    icon: Check,
-  },
-  {
-    title: "Reflect when ready",
-    body: "After all five rituals, choose your pace: Wave, Building Swell, or Tsunami.",
+    title: "A different kind of challenge",
+    body: "For 75 days, complete five daily rituals: Move, Outside, Nourish, Ground and Grow. Small actions repeated consistently create meaningful change.",
     icon: Activity,
   },
   {
-    title: "75 days of showing up",
-    body: "Track your journey across the full challenge. Every day counts — even the quiet ones.",
+    title: "No restarting",
+    body: "Miss a ritual. Miss a day. Miss a week. The challenge continues. Wave rewards returning, not perfection.",
+    icon: RefreshCw,
+  },
+  {
+    title: "Leave a trail",
+    body: "Each day becomes part of your journey. Your calendar records the days you showed up — a visual reminder that progress is often greater than it feels.",
     icon: Calendar,
   },
   {
-    title: "Presence over perfection",
-    body: "Miss a day? Pick up where you left off. Wave doesn't restart.",
-    icon: Leaf,
+    title: "A pattern will emerge",
+    body: "After 75 days, you'll receive a reflection on your journey. Not a score. Not a ranking. A reflection of how you showed up.",
+    icon: Sparkles,
   },
 ];

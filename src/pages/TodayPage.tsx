@@ -2,7 +2,7 @@ import { useState } from "react";
 import { RitualCard } from "../components/RitualCard";
 import { ReflectionModal } from "../components/ReflectionModal";
 import { useWaveState } from "../hooks/useWaveState";
-import { RITUALS } from "../types";
+import { CHALLENGE_DAYS, RITUALS } from "../types";
 import {
   countCompletedRituals,
   formatDate,
@@ -25,6 +25,8 @@ export function TodayPage() {
   const allDone = checkAllComplete(entry);
   const dayFinished = entry.isComplete || entry.isPartial;
   const dayNumber = getDayNumber(state.challengeStartDate, today);
+  const displayDay =
+    dayNumber && dayNumber > CHALLENGE_DAYS ? CHALLENGE_DAYS : dayNumber;
 
   const [showReflection, setShowReflection] = useState(false);
   const [showPartialConfirm, setShowPartialConfirm] = useState(false);
@@ -52,7 +54,7 @@ export function TodayPage() {
     <div>
       <header className="mb-10">
         <p className="text-olive-muted font-medium text-sm uppercase tracking-wider mb-1">
-          {dayNumber ? `Day ${dayNumber}` : "Today"}
+          {displayDay ? `Day ${displayDay}` : "Today"}
         </p>
         <h1 className="font-display text-3xl text-olive-deep leading-tight">
           Today's rituals

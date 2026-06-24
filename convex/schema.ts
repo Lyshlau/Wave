@@ -9,6 +9,7 @@ export default defineSchema({
     deviceId: v.string(),
     challengeStartDate: v.union(v.string(), v.null()),
     onboardingCompleted: v.boolean(),
+    challengeReflectionViewed: v.optional(v.boolean()),
   }).index("by_deviceId", ["deviceId"]),
 
   dailyEntries: defineTable({
