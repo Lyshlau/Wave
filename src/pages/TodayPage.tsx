@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { CompletionMessageModal } from "../components/CompletionMessageModal";
 import { RitualCard } from "../components/RitualCard";
 import { ReflectionModal } from "../components/ReflectionModal";
 import { useWaveState } from "../hooks/useWaveState";
+import { getCompletionMessage } from "../lib/reflectionMessages";
 import { CHALLENGE_DAYS, RITUALS } from "../types";
 import {
   countCompletedRituals,
@@ -30,6 +32,16 @@ export function TodayPage() {
 
   const [showReflection, setShowReflection] = useState(false);
   const [showPartialConfirm, setShowPartialConfirm] = useState(false);
+  const [partialCompletionMessage, setPartialCompletionMessage] = useState<
+    string | null
+  >(null);
+
+  const messageContext = {
+    challengeStartDate: state.challengeStartDate,
+    dailyEntries: state.dailyEntries,
+    today,
+    dayNumber,
+  };
 
   const handleCompleteDay = () => {
     if (allDone) {
@@ -38,8 +50,13 @@ export function TodayPage() {
   };
 
   const handleSavePartial = () => {
+    const message = getCompletionMessage({
+      ...messageContext,
+      isPartial: true,
+    });
     savePartialDay(today);
     setShowPartialConfirm(false);
+    setPartialCompletionMessage(message);
   };
 
   const handleReflectionComplete = (
@@ -128,6 +145,16 @@ export function TodayPage() {
       {dayFinished && entry.isComplete && entry.reflection && (
         <div className="mt-8 pt-6 border-t border-sand/30">
           <p className="text-olive-muted text-sm font-medium uppercase tracking-wider mb-2">
+            For you
+          </p>
+          <p className="text-olive-deep font-display text-xl leading-relaxed mb-6">
+            {getCompletionMessage({
+              ...messageContext,
+              isPartial: false,
+              mood: entry.mood,
+            })}
+          </p>
+          <p className="text-olive-muted text-sm font-medium uppercase tracking-wider mb-2">
             Today's pace
           </p>
           <p className="text-olive-deep font-display text-xl capitalize">
@@ -141,10 +168,32 @@ export function TodayPage() {
         </div>
       )}
 
+      {dayFinished && entry.isPartial && (
+        <div className="mt-8 pt-6 border-t border-sand/30">
+          <p className="text-olive-muted text-sm font-medium uppercase tracking-wider mb-2">
+            For you
+          </p>
+          <p className="text-olive-deep font-display text-xl leading-relaxed">
+            {getCompletionMessage({
+              ...messageContext,
+              isPartial: true,
+            })}
+          </p>
+        </div>
+      )}
+
       {showReflection && (
         <ReflectionModal
+          messageContext={messageContext}
           onComplete={handleReflectionComplete}
           onClose={() => setShowReflection(false)}
+        />
+      )}
+
+      {partialCompletionMessage && (
+        <CompletionMessageModal
+          message={partialCompletionMessage}
+          onDismiss={() => setPartialCompletionMessage(null)}
         />
       )}
 

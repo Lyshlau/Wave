@@ -1,19 +1,31 @@
 import { useState } from "react";
 import type { MoodAnswer, ReflectionPace } from "../types";
 import { MOOD_OPTIONS, REFLECTION_OPTIONS } from "../types";
+import {
+  getCompletionMessage,
+  type CompletionMessageContext,
+} from "../lib/reflectionMessages";
 
 interface ReflectionModalProps {
+  messageContext: Omit<CompletionMessageContext, "mood" | "isPartial">;
   onComplete: (mood: MoodAnswer, reflection: ReflectionPace) => void;
   onClose: () => void;
 }
 
-type Step = "mood" | "reflection";
+type Step = "mood" | "reflection" | "message";
 
-export function ReflectionModal({ onComplete, onClose }: ReflectionModalProps) {
+export function ReflectionModal({
+  messageContext,
+  onComplete,
+  onClose,
+}: ReflectionModalProps) {
   const [step, setStep] = useState<Step>("mood");
   const [selectedMood, setSelectedMood] = useState<MoodAnswer | null>(null);
   const [selectedReflection, setSelectedReflection] =
     useState<ReflectionPace | null>(null);
+  const [completionMessage, setCompletionMessage] = useState<string | null>(
+    null,
+  );
 
   const handleMoodSelect = (mood: MoodAnswer) => {
     setSelectedMood(mood);
@@ -21,9 +33,21 @@ export function ReflectionModal({ onComplete, onClose }: ReflectionModalProps) {
   };
 
   const handleReflectionSelect = (reflection: ReflectionPace) => {
+    if (!selectedMood) return;
+
     setSelectedReflection(reflection);
-    if (selectedMood) {
-      onComplete(selectedMood, reflection);
+    const message = getCompletionMessage({
+      ...messageContext,
+      isPartial: false,
+      mood: selectedMood,
+    });
+    setCompletionMessage(message);
+    setStep("message");
+  };
+
+  const handleMessageDismiss = () => {
+    if (selectedMood && selectedReflection) {
+      onComplete(selectedMood, selectedReflection);
     }
   };
 
@@ -36,7 +60,7 @@ export function ReflectionModal({ onComplete, onClose }: ReflectionModalProps) {
     >
       <div
         className="absolute inset-0 bg-olive-deep/30 backdrop-blur-sm"
-        onClick={onClose}
+        onClick={step === "message" ? undefined : onClose}
         aria-hidden="true"
       />
 
@@ -76,7 +100,7 @@ export function ReflectionModal({ onComplete, onClose }: ReflectionModalProps) {
               })}
             </div>
           </>
-        ) : (
+        ) : step === "reflection" ? (
           <>
             <button
               onClick={() => setStep("mood")}
@@ -116,6 +140,26 @@ export function ReflectionModal({ onComplete, onClose }: ReflectionModalProps) {
                 </button>
               ))}
             </div>
+          </>
+        ) : (
+          <>
+            <p className="text-olive-muted text-sm font-medium uppercase tracking-wider mb-4">
+              For you
+            </p>
+
+            <p
+              id="reflection-title"
+              className="font-display text-2xl text-olive-deep leading-relaxed"
+            >
+              {completionMessage}
+            </p>
+
+            <button
+              onClick={handleMessageDismiss}
+              className="btn-primary w-full mt-8"
+            >
+              Continue
+            </button>
           </>
         )}
       </div>
