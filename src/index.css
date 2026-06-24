@@ -27,8 +27,12 @@
     @apply text-olive-muted;
   }
 
+  .surface {
+    @apply bg-white/40 rounded-2xl;
+  }
+
   .card {
-    @apply bg-white/70 backdrop-blur-sm rounded-2xl border border-sand/60 shadow-sm;
+    @apply bg-white/40 rounded-2xl;
   }
 
   .btn-primary {
@@ -38,8 +42,8 @@
   }
 
   .btn-secondary {
-    @apply bg-cream-dark text-olive-deep font-medium px-6 py-3 rounded-xl
-           border border-sand hover:bg-sand-light transition-colors duration-200
+    @apply bg-transparent text-olive-deep font-medium px-6 py-3 rounded-xl
+           hover:bg-cream-dark/60 transition-colors duration-200
            focus:outline-none focus:ring-2 focus:ring-sage focus:ring-offset-2 focus:ring-offset-cream;
   }
 

@@ -7,6 +7,7 @@ import {
   formatDate,
   getDeviceId,
   loadUserStateFromLocal,
+  migrateDailyEntry,
   saveUserStateToLocal,
 } from "../lib/storage";
 import { api } from "../../convex/_generated/api";
@@ -49,14 +50,16 @@ export function useConvexWaveState() {
             mood: DailyEntry["mood"];
             isComplete: boolean;
             isPartial: boolean;
-          }) => ({
-            date: e.date,
-            rituals: e.rituals,
-            reflection: e.reflection,
-            mood: e.mood,
-            isComplete: e.isComplete,
-            isPartial: e.isPartial,
-          })),
+          }) =>
+            migrateDailyEntry({
+              date: e.date,
+              rituals: e.rituals,
+              reflection: e.reflection,
+              mood: e.mood,
+              isComplete: e.isComplete,
+              isPartial: e.isPartial,
+            }),
+          ),
         ),
       };
       setLocalState(merged);

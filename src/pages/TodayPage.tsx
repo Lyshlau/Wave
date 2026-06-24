@@ -29,7 +29,7 @@ export function TodayPage() {
   const [showReflection, setShowReflection] = useState(false);
   const [showPartialConfirm, setShowPartialConfirm] = useState(false);
 
-  const handleFinishRituals = () => {
+  const handleCompleteDay = () => {
     if (allDone) {
       setShowReflection(true);
     }
@@ -50,32 +50,32 @@ export function TodayPage() {
 
   return (
     <div>
-      <header className="mb-8">
-        <p className="text-olive font-medium text-sm uppercase tracking-wider mb-1">
+      <header className="mb-10">
+        <p className="text-olive-muted font-medium text-sm uppercase tracking-wider mb-1">
           {dayNumber ? `Day ${dayNumber}` : "Today"}
         </p>
         <h1 className="font-display text-3xl text-olive-deep leading-tight">
-          Your daily rituals
+          Today's rituals
         </h1>
         <p className="text-olive mt-2 text-base">
           {dayFinished
             ? entry.isComplete
-              ? "Beautiful — you've completed today."
-              : "Saved as a partial day. That's still progress."
-            : "Tick off each ritual as you go. No rush."}
+              ? "Day complete. You showed up."
+              : "Saved as a partial day. Still progress."
+            : "Check off each ritual as you go."}
         </p>
       </header>
 
-      <div className="flex items-center justify-between mb-5">
-        <span className="text-olive-deep font-semibold text-lg">
+      <div className="flex items-center justify-between mb-6">
+        <span className="text-olive-deep font-medium text-sm">
           {completedCount} of {RITUALS.length}
         </span>
         <div className="flex gap-1">
           {RITUALS.map((_, i) => (
             <div
               key={i}
-              className={`h-2 w-8 rounded-full transition-colors ${
-                i < completedCount ? "bg-sage-dark" : "bg-sand"
+              className={`h-1 w-7 rounded-full transition-colors ${
+                i < completedCount ? "bg-sage-dark" : "bg-sand/60"
               }`}
               aria-hidden="true"
             />
@@ -83,7 +83,7 @@ export function TodayPage() {
         </div>
       </div>
 
-      <div className="flex flex-col gap-3 mb-8">
+      <div className="mb-10">
         {RITUALS.map((ritual) => (
           <RitualCard
             key={ritual.id}
@@ -99,7 +99,7 @@ export function TodayPage() {
         <div className="flex flex-col gap-3">
           {allDone ? (
             <button
-              onClick={handleFinishRituals}
+              onClick={handleCompleteDay}
               className="btn-primary w-full text-base"
             >
               Complete day
@@ -114,8 +114,8 @@ export function TodayPage() {
                 Save partial day
               </button>
               {completedCount > 0 && (
-                <p className="text-olive text-sm text-center">
-                  Finish all five rituals to reflect and complete your day
+                <p className="text-olive-muted text-sm text-center">
+                  Complete all five rituals to reflect and finish your day
                 </p>
               )}
             </>
@@ -124,15 +124,15 @@ export function TodayPage() {
       )}
 
       {dayFinished && entry.isComplete && entry.reflection && (
-        <div className="card p-5 mt-4">
-          <p className="text-olive text-sm font-medium uppercase tracking-wider mb-2">
-            Today's reflection
+        <div className="mt-8 pt-6 border-t border-sand/30">
+          <p className="text-olive-muted text-sm font-medium uppercase tracking-wider mb-2">
+            Today's pace
           </p>
           <p className="text-olive-deep font-display text-xl capitalize">
             {entry.reflection.replace("-", " ")}
           </p>
           {entry.mood && (
-            <p className="text-olive text-sm mt-1 capitalize">
+            <p className="text-olive-muted text-sm mt-1 capitalize">
               Feeling {entry.mood}
             </p>
           )}
@@ -153,15 +153,15 @@ export function TodayPage() {
           aria-modal="true"
         >
           <div
-            className="absolute inset-0 bg-olive-deep/40 backdrop-blur-sm"
+            className="absolute inset-0 bg-olive-deep/30 backdrop-blur-sm"
             onClick={() => setShowPartialConfirm(false)}
             aria-hidden="true"
           />
-          <div className="relative bg-cream w-full sm:max-w-sm sm:mx-4 rounded-t-3xl sm:rounded-3xl p-6 shadow-xl border border-sand/60">
+          <div className="relative bg-cream w-full sm:max-w-sm sm:mx-4 rounded-t-3xl sm:rounded-3xl p-6">
             <h2 className="font-display text-xl text-olive-deep mb-2">
               Save as partial day?
             </h2>
-            <p className="text-olive text-sm mb-6 leading-relaxed">
+            <p className="text-olive-muted text-sm mb-6 leading-relaxed">
               You've completed {completedCount} of {RITUALS.length} rituals.
               That's still progress — no reflection needed.
             </p>

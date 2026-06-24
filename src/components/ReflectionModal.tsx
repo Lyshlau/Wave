@@ -35,12 +35,12 @@ export function ReflectionModal({ onComplete, onClose }: ReflectionModalProps) {
       aria-labelledby="reflection-title"
     >
       <div
-        className="absolute inset-0 bg-olive-deep/40 backdrop-blur-sm"
+        className="absolute inset-0 bg-olive-deep/30 backdrop-blur-sm"
         onClick={onClose}
         aria-hidden="true"
       />
 
-      <div className="relative bg-cream w-full sm:max-w-md sm:mx-4 rounded-t-3xl sm:rounded-3xl p-6 pb-8 shadow-xl border border-sand/60">
+      <div className="relative bg-cream w-full sm:max-w-md sm:mx-4 rounded-t-3xl sm:rounded-3xl p-6 pb-8">
         {step === "mood" ? (
           <>
             <h2
@@ -49,27 +49,31 @@ export function ReflectionModal({ onComplete, onClose }: ReflectionModalProps) {
             >
               How do you feel?
             </h2>
-            <p className="text-olive text-sm mb-6">
-              Take a moment to check in with yourself
+            <p className="text-olive-muted text-sm mb-6">
+              Take a moment to check in
             </p>
 
-            <div className="grid grid-cols-1 gap-2">
-              {MOOD_OPTIONS.map((option) => (
-                <button
-                  key={option.value}
-                  onClick={() => handleMoodSelect(option.value)}
-                  className="flex items-center gap-3 p-4 rounded-xl border border-sand/60
-                             bg-white/60 hover:bg-white hover:border-sage transition-colors
-                             text-left"
-                >
-                  <span className="text-2xl" aria-hidden="true">
-                    {option.emoji}
-                  </span>
-                  <span className="text-olive-deep font-medium">
-                    {option.label}
-                  </span>
-                </button>
-              ))}
+            <div className="grid grid-cols-1 gap-1">
+              {MOOD_OPTIONS.map((option) => {
+                const Icon = option.icon;
+                return (
+                  <button
+                    key={option.value}
+                    onClick={() => handleMoodSelect(option.value)}
+                    className="flex items-center gap-3 py-3.5 px-1 rounded-xl
+                               hover:bg-cream-dark/50 transition-colors text-left"
+                  >
+                    <Icon
+                      className="w-5 h-5 text-sage-dark"
+                      strokeWidth={1.75}
+                      aria-hidden="true"
+                    />
+                    <span className="text-olive-deep font-medium">
+                      {option.label}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
           </>
         ) : (
@@ -78,39 +82,35 @@ export function ReflectionModal({ onComplete, onClose }: ReflectionModalProps) {
               onClick={() => setStep("mood")}
               className="text-olive-muted text-sm mb-4 hover:text-olive transition-colors"
             >
-              ← Back
+              Back
             </button>
 
             <h2
               id="reflection-title"
               className="font-display text-2xl text-olive-deep mb-1"
             >
-              What's your pace today?
+              What was your pace today?
             </h2>
-            <p className="text-olive text-sm mb-6">
-              There's no right answer — just notice how today felt
+            <p className="text-olive-muted text-sm mb-6">
+              No right answer — just notice how today felt
             </p>
 
-            <div className="grid grid-cols-1 gap-2">
+            <div className="grid grid-cols-1 gap-1">
               {REFLECTION_OPTIONS.map((option) => (
                 <button
                   key={option.value}
                   onClick={() => handleReflectionSelect(option.value)}
-                  className={`flex flex-col p-4 rounded-xl border transition-colors text-left
+                  className={`flex flex-col py-3.5 px-1 rounded-xl transition-colors text-left
                     ${
                       selectedReflection === option.value
-                        ? "bg-sage-dark border-sage-dark text-cream"
-                        : "bg-white/60 border-sand/60 hover:bg-white hover:border-sage text-olive-deep"
+                        ? "bg-sage-dark/10"
+                        : "hover:bg-cream-dark/50"
                     }`}
                 >
-                  <span className="font-medium text-base">{option.label}</span>
-                  <span
-                    className={`text-sm mt-0.5 ${
-                      selectedReflection === option.value
-                        ? "text-cream/80"
-                        : "text-olive"
-                    }`}
-                  >
+                  <span className="font-medium text-base text-olive-deep">
+                    {option.label}
+                  </span>
+                  <span className="text-sm mt-0.5 text-olive-muted">
                     {option.description}
                   </span>
                 </button>
